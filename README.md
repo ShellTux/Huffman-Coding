@@ -8,7 +8,7 @@ Make sure you have python virtual environment installed
 
 Distro | Command
 --- | ---
-`Ubuntu/Debian` | `apt install python python3-venv pipenv`
+`Ubuntu/Debian` | `apt install python3 python3-venv pipenv`
 `CentOS/Fedora` | `dnf install python python3 pipenv`
 `Arch Linux` | `pacman -S python python-virtualenv python-pipenv`
 
@@ -19,13 +19,13 @@ Distro | Command
 Use virtual environment with:
 
 ```sh
-virtualenv main_env
+virtualenv venv
 ```
 
 ### Activate
 
 ```sh
-source main_env/bin/activate
+source venv/bin/activate
 ```
 
 ### Install requirements
