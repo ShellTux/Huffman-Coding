@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
+from data import values, varNames, variableValues
 from numpy import ndarray
 from numpy.typing import NDArray
 import numpy as np
-from data import values, varNames, variableValues
 
 def variableAlphabet(
         values: ndarray,

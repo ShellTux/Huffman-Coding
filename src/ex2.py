@@ -1,37 +1,11 @@
 #!/usr/bin/env python3
 
-from numpy import ndarray
-from matplotlib.figure import Figure
+from data import varNames, values
+from graph import scatter
 import matplotlib.pyplot as plt
-from data import varNames, values, variableValues
 
 if __name__ != "__main__":
     exit(0)
-
-def scatter(
-        values: ndarray, varNames: list[str],
-        *,
-        title: str | None = None,
-        xLabel: str,
-        yLabel: str,
-        color: str = 'purple',
-        marker: str = 'o',
-        grid: bool = True,
-        figure: Figure,
-        subplot: int,
-        ):
-    if title is None:
-        title = f'{yLabel} vs {xLabel}'
-
-    plt.figure(figure)
-    plt.subplot(subplot)
-    xValues = variableValues(values, varNames, label = xLabel)
-    yValues = variableValues(values, varNames, label = yLabel)
-    plt.scatter(xValues, yValues, color = color, marker = marker)
-    plt.title(title)
-    plt.xlabel(xLabel)
-    plt.ylabel(yLabel)
-    plt.grid(grid)
 
 figure, _ = plt.subplots(nrows = 3, ncols = 2)
 figure.suptitle('Ex2')
