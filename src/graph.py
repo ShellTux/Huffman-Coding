@@ -29,6 +29,7 @@ def scatter(
     plt.grid(grid)
 
 def histogram(
+        alphabet: ndarray,
         values: ndarray,
         *,
         title: str = 'Histogram',
@@ -41,7 +42,10 @@ def histogram(
         ):
     plt.figure(figure)
     plt.subplot(subplot)
-    plt.hist(values, color = color)
+    # TODO: x values are float
+    print(alphabet.dtype)
+    plt.bar(alphabet, values, color = color)
+    # TODO: add occurrences for intermidiate values (plt.xticks)
     plt.title(title)
     plt.xlabel(xLabel)
     plt.ylabel(yLabel)
