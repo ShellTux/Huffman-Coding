@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from numpy import ndarray
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -8,7 +9,7 @@ if __name__ != "__main__":
     exit(0)
 
 def scatter(
-        values, varNames,
+        values: ndarray, varNames: list[str],
         *,
         title: str | None = None,
         xLabel: str,
