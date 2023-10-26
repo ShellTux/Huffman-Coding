@@ -3,7 +3,7 @@
 from numpy import ndarray
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
-from data import varNames, values
+from data import varNames, values, variableValues
 
 if __name__ != "__main__":
     exit(0)
@@ -25,8 +25,8 @@ def scatter(
 
     plt.figure(figure)
     plt.subplot(subplot)
-    xValues = values[:, varNames.index(xLabel)]
-    yValues = values[:, varNames.index(yLabel)]
+    xValues = variableValues(values, varNames, label = xLabel)
+    yValues = variableValues(values, varNames, label = yLabel)
     plt.scatter(xValues, yValues, color = color, marker = marker)
     plt.title(title)
     plt.xlabel(xLabel)

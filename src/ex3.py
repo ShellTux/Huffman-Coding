@@ -3,7 +3,7 @@
 from numpy import ndarray
 from numpy.typing import NDArray
 import numpy as np
-from data import values, varNames
+from data import values, varNames, variableValues
 
 if __name__ != "__main__":
     exit(0)
@@ -14,7 +14,7 @@ def variableAlphabet(
         *,
         label: str
         ) -> NDArray[np.uint16]:
-    labelValues = values[:, varNames.index(label)]
+    labelValues = variableValues(values, varNames, label = label)
 
     return np.unique(labelValues).astype(np.uint16)
 
