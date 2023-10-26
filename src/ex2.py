@@ -24,4 +24,5 @@ for index, (xLabel, yLabel) in enumerate(variablePairs):
             figure = figure,
             subplot = int(f'32{index+1}'))
 
+plt.savefig('Ex2.png')
 plt.show()

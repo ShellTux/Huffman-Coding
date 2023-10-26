@@ -20,4 +20,5 @@ if __name__ == "__main__":
             yLabel = 'Count',
             figure = figure
             )
+    plt.savefig('Ex5.png')
     plt.show()
