@@ -3,7 +3,7 @@
 from numpy import ndarray
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
-import pandas as pd
+from data import varNames, values
 
 if __name__ != "__main__":
     exit(0)
@@ -32,10 +32,6 @@ def scatter(
     plt.xlabel(xLabel)
     plt.ylabel(yLabel)
     plt.grid(grid)
-
-data = pd.read_excel('./assets/CarDataset.xlsx')
-varNames = data.columns.values.tolist()
-values = data.values
 
 figure, _ = plt.subplots(nrows = 3, ncols = 2)
 figure.suptitle('Ex2')
