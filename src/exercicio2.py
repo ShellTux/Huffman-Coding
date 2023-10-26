@@ -2,13 +2,11 @@
 
 import pandas as pd
 import matplotlib.pyplot as plt
-from data import variableValues
+from data import variableValues, values, varNames
+
 if __name__ != "__main__":
     exit(0)
 
-data = pd.read_excel('./assets/CarDataset.xlsx')
-varNames = data.columns.values.tolist()
-values = data.values
 print(varNames)
 print(values)
 MPGValues = variableValues(values,varNames,'MPG')
