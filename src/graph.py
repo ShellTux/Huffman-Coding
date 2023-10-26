@@ -13,7 +13,7 @@ def scatter(
         marker: str = 'o',
         grid: bool = True,
         figure: Figure,
-        subplot: int,
+        subplot: int = 111,
         ):
     if title is None:
         title = f'{yLabel} vs {xLabel}'
@@ -23,6 +23,25 @@ def scatter(
     xValues = variableValues(values, varNames, label = xLabel)
     yValues = variableValues(values, varNames, label = yLabel)
     plt.scatter(xValues, yValues, color = color, marker = marker)
+    plt.title(title)
+    plt.xlabel(xLabel)
+    plt.ylabel(yLabel)
+    plt.grid(grid)
+
+def histogram(
+        values: ndarray,
+        *,
+        title: str = 'Histogram',
+        xLabel: str,
+        yLabel: str,
+        color: str = 'red',
+        grid: bool = True,
+        figure: Figure,
+        subplot: int = 111,
+        ):
+    plt.figure(figure)
+    plt.subplot(subplot)
+    plt.hist(values, color = color)
     plt.title(title)
     plt.xlabel(xLabel)
     plt.ylabel(yLabel)
