@@ -25,3 +25,10 @@ def variableAlphabet(
     labelValues = variableValues(values, varNames, label = label)
 
     return np.unique(labelValues).astype(np.uint16)
+
+def bits_per_symbol(values: NDArray):
+    probabilities = np.bincount(values) / values.size
+    probabilities = probabilities[probabilities > 0]
+
+    # Compute the entropy using the formula H = -sum(p * log2(p))
+    return -np.sum(probabilities * np.log2(probabilities))
