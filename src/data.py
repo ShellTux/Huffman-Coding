@@ -3,6 +3,12 @@ from typing import Dict
 import numpy as np
 import pandas as pd
 
+def mostRepresentativeSymbol(*, values: NDArray):
+    alphabet, alphabetCount = np.unique(values.flatten(), return_counts = True)
+
+    maxIndex = np.argmax(alphabetCount)
+    return alphabet[maxIndex]
+
 class Data:
     """
     This class is used to read an excel file and store data and provide access to it.
@@ -154,6 +160,47 @@ class Data:
 
         # NOTE: Entropy H = -sum(p * log2(p))
         return -np.sum(probabilities * np.log2(probabilities))
+
+    def binning(self, *,
+                binSize: int,
+                variable: str | None = None,
+                ) -> NDArray:
+        values = self.getValues(variable = variable)
+        alphabet, alphabetCount = DATA.getAlphabet(
+                variable = variable,
+                returnCount=True
+                )
+
+        # Binning Algorithm
+        min, max = alphabet[0], alphabet[0] + binSize - 1
+        maxAlphabet = alphabet[-1]
+        while min < maxAlphabet:
+            valuesFilter: NDArray[np.bool_] = (min <= values) & (values <= max)
+
+            alphabetFilter: NDArray[np.bool_] = (min <= alphabet) & (alphabet <= max)
+            alphabetSection = alphabet[alphabetFilter]
+
+            if alphabetSection.size <= 0:
+                min += binSize
+                max += binSize
+                continue
+
+            symbol = mostRepresentativeSymbol(values = alphabetSection)
+
+            values = np.where(valuesFilter, symbol, values)
+
+            min += binSize
+            max += binSize
+
+        return values
+
+    def mostRepresentativeSymbol(
+            self, *,
+            variable: str | None = None
+            ) -> int | float:
+        values = self.getValues(variable = variable)
+
+        return mostRepresentativeSymbol(values = values)
 
 
 
