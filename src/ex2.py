@@ -1,28 +1,40 @@
 #!/usr/bin/env python3
 
-from data import varNames, values
+from data import DATA
 from graph import scatter
 import matplotlib.pyplot as plt
 
 if __name__ != "__main__":
     exit(0)
 
-figure, _ = plt.subplots(nrows = 3, ncols = 2)
+rows, cols = 3, 2
+figure, _ = plt.subplots(nrows = rows, ncols = cols)
 figure.suptitle('Ex2')
 figure.subplots_adjust(wspace=0.5, hspace=0.5)
-variablePairs = (
-        ('Acceleration', 'MPG'),
-        ('Cylinders', 'MPG'),
-        ('Displacement', 'MPG'),
-        ('Horsepower', 'MPG'),
-        ('ModelYear', 'MPG'),
-        ('Weight', 'MPG'),
+variables = (
+        'Acceleration',
+        'Cylinders',
+        'Displacement',
+        'Horsepower',
+        'ModelYear',
+        'Weight',
         )
-for index, (xLabel, yLabel) in enumerate(variablePairs):
+MPGValues = DATA.getValues(variable = 'MPG')
+for index, variable in enumerate(variables):
     # TODO: adjust subplot size according to variablePairs size
-    scatter(values, varNames, xLabel = xLabel, yLabel = yLabel,
-            figure = figure,
-            subplot = int(f'32{index+1}'))
+    values = DATA.getValues(variable = variable)
 
-plt.savefig('Ex2.png')
+    scatter(
+            xValues = values,
+            yValues = MPGValues,
+            figure  = figure,
+            xLabel  = variable,
+            yLabel  = 'MPG',
+            subplot = int(f'{rows}{cols}{index + 1}')
+            )
+
 plt.show()
+
+figure.subplots_adjust(wspace = .5, hspace = .5)
+figure.set_size_inches(rows * 4, cols * 4)
+figure.savefig('Ex2.png')

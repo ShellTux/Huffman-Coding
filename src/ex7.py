@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 
-import data
-from data import variableValues
+from data import DATA
 
 if __name__ == "__main__":
-    for variable in data.varNames:
-        values = variableValues(data.values, data.varNames, label = variable)
-        bitsMean = data.bits_per_symbol(values)
-        print(f'{variable} = {bitsMean:.2f} bits/symbol')
+    for variable in DATA.getVariables():
+        values = DATA.getValues(variable = variable)
+        bps = DATA.bitsPerSymbol(variable = variable)
+        print(f'{variable} = {bps:.2f} bits/symbol')
 
     print()
 
     # All values
-    valuesFlatten = data.values.flatten()
-    valuesBPS = data.bits_per_symbol(valuesFlatten)
+    valuesFlatten = DATA.getValues().flatten()
+    valuesBPS = DATA.bitsPerSymbol()
     print(f'bps(values) = {valuesBPS:.2f} bits/symbol')
