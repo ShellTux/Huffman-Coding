@@ -8,7 +8,7 @@
 
 `MPG` tem uma relação inversa com `Displacement`, `Horsepower`, `Weight`
 
-Não existe uma relação significativamente estatística entre `MPG` e `Acceleration`
+Não existe uma relação significativa entre `MPG` e `Acceleration`
 
 Houve um incremento no `MPG` ao longo dos anos.
 
