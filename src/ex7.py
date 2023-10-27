@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from data import DATA
-import numpy as np
 
 if __name__ == "__main__":
     variables = DATA.getVariables()
