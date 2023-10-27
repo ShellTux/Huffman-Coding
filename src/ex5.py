@@ -15,7 +15,7 @@ if __name__ == "__main__":
             )
     print(alphabet, alphabetCount, sep = '\n')
     histogram(
-            xValues = alphabet,
+            xValues = alphabet.astype(str),
             yValues = alphabetCount,
             xLabel  = variable,
             yLabel  = 'Count',

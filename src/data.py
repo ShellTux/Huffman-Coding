@@ -1,5 +1,6 @@
 from numpy._typing import NDArray
 from typing import Dict
+import huffmancodec.huffmancodec as huffc
 import numpy as np
 import pandas as pd
 
@@ -161,12 +162,33 @@ class Data:
         # NOTE: Entropy H = -sum(p * log2(p))
         return -np.sum(probabilities * np.log2(probabilities))
 
+    def averageBitsPerSymbol(self, *,
+            variable: str | None = None
+            ) -> np.floating:
+        S = self.getValues(variable = variable)
+        codec = huffc.HuffmanCodec.from_data(S)
+        _, lengths = codec.get_code_len()
+
+        probabilities = np.bincount(S) / S.size
+        probabilities = probabilities[probabilities > 0]
+
+        return np.average(lengths, weights = probabilities)
+
+    # TODO: Remove duplicated code between lengthVariance and averageBitsPerSymbol
+    def lengthVariance(self, *, variable: str | None = None) -> np.floating:
+        S = self.getValues(variable = variable)
+        codec = huffc.HuffmanCodec.from_data(S)
+        _, lengths = codec.get_code_len()
+
+        return np.var(lengths)
+
+
     def binning(self, *,
                 binSize: int,
                 variable: str | None = None,
                 ) -> NDArray:
         values = self.getValues(variable = variable)
-        alphabet, alphabetCount = DATA.getAlphabet(
+        alphabet, _ = DATA.getAlphabet(
                 variable = variable,
                 returnCount=True
                 )
