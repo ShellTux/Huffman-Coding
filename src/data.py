@@ -148,6 +148,18 @@ class Data:
 
         return probabilities[values]
 
+    def getJointProbability(
+            self,
+            *,
+            variable1: str,
+            variable2: str,
+            ) -> NDArray[np.floating]:
+        probabilities1 = self.getProbabilities(variable = variable1)
+        probabilities2 = self.getProbabilities(variable = variable2)
+
+        # NOTE: Assuming independence
+        return probabilities1 * probabilities2
+
     def bitsPerSymbol(self, *, variable: str | None = None):
         """
         Returns the number of bits per symbol required to represent the values present in the excel sheet or, if a variable
