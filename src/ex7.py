@@ -2,11 +2,10 @@
 
 from data import DATA
 
-if __name__ == "__main__":
+def main():
     variables = DATA.getVariables()
     maxVariableLength = max(map(len, variables))
     for variable in variables:
-        values = DATA.getValues(variable = variable)
         bps = DATA.bitsPerSymbol(variable = variable)
         print(f'{variable:<{maxVariableLength}} = {bps:.2f} bits/symbol')
 

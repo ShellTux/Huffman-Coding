@@ -2,7 +2,7 @@
 
 from data import DATA
 
-if __name__ == "__main__":
+def main():
     for variable in DATA.getVariables():
         print(f'{variable}:', DATA.getAlphabet(variable = variable),
               sep = '\n',

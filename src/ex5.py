@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 
 from data import DATA
-from graph import histogram
+from data.graph import histogram
 import matplotlib.pyplot as plt
-import numpy as np
 
-if __name__ == "__main__":
+def main():
     figure = plt.figure('Histogram')
     variable = 'Acceleration'
-    values = DATA.getValues(variable = variable).astype(np.uint16)
     alphabet, alphabetCount = DATA.getAlphabet(
             variable    = variable,
             returnCount = True

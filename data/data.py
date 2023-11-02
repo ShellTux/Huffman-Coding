@@ -3,7 +3,6 @@ from typing import Dict
 import huffmancodec.huffmancodec as huffc
 import numpy as np
 import pandas as pd
-import os
 
 def mostRepresentativeSymbol(*, values: NDArray):
     alphabet, alphabetCount = np.unique(values.flatten(), return_counts = True)
@@ -189,7 +188,7 @@ class Data:
                 variable: str | None = None,
                 ) -> NDArray:
         values = self.getValues(variable = variable)
-        alphabet, _ = DATA.getAlphabet(
+        alphabet, _ = self.getAlphabet(
                 variable = variable,
                 returnCount=True
                 )
@@ -224,9 +223,3 @@ class Data:
         values = self.getValues(variable = variable)
 
         return mostRepresentativeSymbol(values = values)
-
-
-
-root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-file_path = os.path.join(root, 'assets', 'CarDataset.xlsx')
-DATA = Data(file_path)

@@ -3,7 +3,7 @@
 from data import DATA
 
 
-if __name__ == "__main__":
+def main():
     for variable in DATA.getVariables():
         avgBits = DATA.averageBitsPerSymbol(variable = variable)
         lengthVariance = DATA.lengthVariance(variable = variable)
