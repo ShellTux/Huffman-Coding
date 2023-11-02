@@ -246,6 +246,25 @@ class Data:
 
         return mostRepresentativeSymbol(values = values)
 
+    def mutualInformation(
+            self,
+            *,
+            variableX: str,
+            variableY: str,
+            ) -> float:
+        probabilitiesX = self.getProbabilities(variable = variableX)
+        probabilitiesY = self.getProbabilities(variable = variableY)
+        jointProbability = self.getJointProbability(
+                variable1 = variableX,
+                variable2 = variableY
+                )
+
+        mutualInformation = jointProbability / (probabilitiesX * probabilitiesY)
+        mutualInformation = np.log2(mutualInformation)
+        mutualInformation *= jointProbability
+
+        return mutualInformation.sum()
+
 
 
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
