@@ -9,6 +9,7 @@
 - openpyxl==3.1.2
 - pandas==2.1.1
 - PyQt5==5.15.10
+- pytest==7.4.3
 
 ### Prerequisites
 
