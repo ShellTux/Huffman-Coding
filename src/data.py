@@ -138,6 +138,16 @@ class Data:
         else:
             return np.unique(values)
 
+    def getProbabilities(
+            self,
+            *,
+            variable: str | None = None,
+            ) -> NDArray[np.floating]:
+        values = self.getValues(variable = variable).flatten()
+        probabilities = np.bincount(values) / values.size
+
+        return probabilities[values]
+
     def bitsPerSymbol(self, *, variable: str | None = None):
         """
         Returns the number of bits per symbol required to represent the values present in the excel sheet or, if a variable
@@ -156,8 +166,7 @@ class Data:
             is specified, its values.
         """
 
-        values = self.getValues(variable = variable).flatten()
-        probabilities = np.bincount(values) / values.size
+        probabilities = self.getProbabilities(variable = variable)
         probabilities = probabilities[probabilities > 0]
 
         # NOTE: Entropy H = -sum(p * log2(p))
@@ -170,7 +179,7 @@ class Data:
         codec = huffc.HuffmanCodec.from_data(S)
         _, lengths = codec.get_code_len()
 
-        probabilities = np.bincount(S) / S.size
+        probabilities = self.getProbabilities(variable = variable)
         probabilities = probabilities[probabilities > 0]
 
         return np.average(lengths, weights = probabilities)
