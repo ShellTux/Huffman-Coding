@@ -98,6 +98,20 @@ file to help maintain consistent coding-style guidelines.
 
 > Now you are ready to go.
 
+## Running
+
+You can run the project by running:
+
+```shell
+make run
+```
+
+## Testing
+
+```shell
+make test
+```
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE). Feel free to modify and distribute the code as per the terms of the license.
