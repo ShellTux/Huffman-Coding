@@ -4,21 +4,21 @@ from numpy._typing import NDArray
 sliceLength = 10
 
 def main():
-    mpg = DATA.getValues(variable='MPG')
+    mpg          = DATA.getValues(variable='MPG')
     acceleration = DATA.getValues(variable='Acceleration')
-    cylinders = DATA.getValues(variable='Cylinders')
+    cylinders    = DATA.getValues(variable='Cylinders')
     displacement = DATA.getValues(variable='Displacement')
-    horsepower = DATA.getValues(variable='Horsepower')
-    model = DATA.getValues(variable='ModelYear')
-    weight = DATA.getValues(variable='Weight')
+    horsepower   = DATA.getValues(variable='Horsepower')
+    model        = DATA.getValues(variable='ModelYear')
+    weight       = DATA.getValues(variable='Weight')
     # Define the formula for MPG estimation
     estimativa = mpg_estimativa(
-        acceleration=acceleration,
-        cylinders=cylinders,
-        displacement=displacement,
-        horsepower=horsepower,
-        model=model,
-        weight=weight
+        acceleration = acceleration,
+        cylinders    = cylinders,
+        displacement = displacement,
+        horsepower   = horsepower,
+        model        = model,
+        weight       = weight
     )
     print('Com todas as variaveis')
     print(mpg[:sliceLength])
