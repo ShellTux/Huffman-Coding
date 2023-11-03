@@ -163,3 +163,4 @@ cython_debug/
 *.png
 !/assets/*.png
 **/*.bak
+**/relatorio.pdf
