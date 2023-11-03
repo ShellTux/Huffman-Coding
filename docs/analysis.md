@@ -23,7 +23,7 @@ Veículos com menos que 4 cilindros utilizam menos combustível por milhas
 ## Exercício 7
 
 ```sh
-❯ ./src/ex7.py
+$ ./src/ex7.py
 Acceleration = 3.50 bits/symbol
 Cylinders    = 1.59 bits/symbol
 Displacement = 5.73 bits/symbol
@@ -49,7 +49,7 @@ na nossa fonte de dados e poder comprimi-los.
 ## Exercício 8
 
 ```sh
-❯ ./src/ex8.py
+$ ./src/ex8.py
 --------------------
 Variable: Weight
 Codec:
