@@ -106,7 +106,7 @@ porque torna o Huffman Coding mais eficiente e traz os seguintes beníficios:
 2. Melhor transmissão de dados
 3. Processamento de dados mais rápido
 
-##Exercicio 11
+## Exercicio 11
 
 a)Aplicar esta relacao ao conjunto de dados fornecidos.
 
