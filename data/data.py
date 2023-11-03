@@ -142,10 +142,14 @@ class Data:
             *,
             variable: str | None = None,
             ) -> NDArray[np.floating]:
-        values = self.getValues(variable = variable).flatten()
+        values = self.getValues(variable = variable)
+
+        if values.ndim > 1:
+            values = values.flatten()
+
         probabilities = np.bincount(values) / values.size
 
-        return probabilities[values]
+        return probabilities
 
     def getJointProbability(
             self,
