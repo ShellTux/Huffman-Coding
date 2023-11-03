@@ -8,17 +8,22 @@ from src.ex6 import main as ex6
 from src.ex7 import main as ex7
 from src.ex8 import main as ex8
 
+GREEN = '\033[32m'
+RESET = '\033[0m'
 
 if __name__ == "__main__":
     exercices = (
-            ex2,
-            ex3,
-            ex4,
-            ex5,
-            ex6,
-            ex7,
-            ex8,
+            ('Ex2', ex2),
+            ('Ex3', ex3),
+            ('Ex4', ex4),
+            ('Ex5', ex5),
+            ('Ex6', ex6),
+            ('Ex7', ex7),
+            ('Ex8', ex8),
             )
 
-    for main in exercices:
+    for name, main in exercices:
+        print()
+        print(GREEN + f'-------{name}-------' + '\033[0m')
         main()
+        print()
