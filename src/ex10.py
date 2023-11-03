@@ -3,9 +3,11 @@ from data import DATA
 
 def main():
     variables = (
-            ('Acceleration', 'MPG'),
             ('Weight', 'MPG'),
+            ('Displacement', 'MPG'),
+            ('Horsepower', 'MPG'),
             )
+
     for variableX, variableY in variables:
         MI = DATA.mutualInformation(
                 variableX = variableX,
