@@ -1,3 +1,9 @@
+---
+title: TP1 - Entropia, Informação Mútua e Codificação de Huffman
+author: João Alves, José Iñaki, Luís Góis
+date: novembro 03, 2023
+---
+
 # Análise
 
 ## Exercício 2
