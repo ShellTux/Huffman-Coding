@@ -163,9 +163,13 @@ class Data:
         return -np.sum(probabilities * np.log2(probabilities))
 
     def averageBitsPerSymbol(self, *,
-            variable: str | None = None
+            variable: str | None = None,
             ) -> np.floating:
         S = self.getValues(variable = variable)
+
+        if S.ndim > 1:
+            S = S.flatten()
+
         codec = huffc.HuffmanCodec.from_data(S)
         _, lengths = codec.get_code_len()
 
@@ -177,6 +181,10 @@ class Data:
     # TODO: Remove duplicated code between lengthVariance and averageBitsPerSymbol
     def lengthVariance(self, *, variable: str | None = None) -> np.floating:
         S = self.getValues(variable = variable)
+
+        if S.ndim > 1:
+            S = S.flatten()
+
         codec = huffc.HuffmanCodec.from_data(S)
         _, lengths = codec.get_code_len()
 
