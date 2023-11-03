@@ -3,7 +3,6 @@ from typing import Dict
 import huffmancodec.huffmancodec as huffc
 import numpy as np
 import pandas as pd
-import os
 
 def mostRepresentativeSymbol(*, values: NDArray):
     alphabet, alphabetCount = np.unique(values.flatten(), return_counts = True)
@@ -138,6 +137,32 @@ class Data:
         else:
             return np.unique(values)
 
+    def getProbabilities(
+            self,
+            *,
+            variable: str | None = None,
+            ) -> NDArray[np.floating]:
+        values = self.getValues(variable = variable)
+
+        if values.ndim > 1:
+            values = values.flatten()
+
+        probabilities = np.bincount(values) / values.size
+
+        return probabilities
+
+    def getJointProbability(
+            self,
+            *,
+            variable1: str,
+            variable2: str,
+            ) -> NDArray[np.floating]:
+        probabilities1 = self.getProbabilities(variable = variable1)
+        probabilities2 = self.getProbabilities(variable = variable2)
+
+        # NOTE: Assuming independence
+        return probabilities1 * probabilities2
+
     def bitsPerSymbol(self, *, variable: str | None = None):
         """
         Returns the number of bits per symbol required to represent the values present in the excel sheet or, if a variable
@@ -156,21 +181,24 @@ class Data:
             is specified, its values.
         """
 
-        values = self.getValues(variable = variable).flatten()
-        probabilities = np.bincount(values) / values.size
+        probabilities = self.getProbabilities(variable = variable)
         probabilities = probabilities[probabilities > 0]
 
         # NOTE: Entropy H = -sum(p * log2(p))
         return -np.sum(probabilities * np.log2(probabilities))
 
     def averageBitsPerSymbol(self, *,
-            variable: str | None = None
+            variable: str | None = None,
             ) -> np.floating:
         S = self.getValues(variable = variable)
+
+        if S.ndim > 1:
+            S = S.flatten()
+
         codec = huffc.HuffmanCodec.from_data(S)
         _, lengths = codec.get_code_len()
 
-        probabilities = np.bincount(S) / S.size
+        probabilities = self.getProbabilities(variable = variable)
         probabilities = probabilities[probabilities > 0]
 
         return np.average(lengths, weights = probabilities)
@@ -178,6 +206,10 @@ class Data:
     # TODO: Remove duplicated code between lengthVariance and averageBitsPerSymbol
     def lengthVariance(self, *, variable: str | None = None) -> np.floating:
         S = self.getValues(variable = variable)
+
+        if S.ndim > 1:
+            S = S.flatten()
+
         codec = huffc.HuffmanCodec.from_data(S)
         _, lengths = codec.get_code_len()
 
@@ -189,7 +221,7 @@ class Data:
                 variable: str | None = None,
                 ) -> NDArray:
         values = self.getValues(variable = variable)
-        alphabet, _ = DATA.getAlphabet(
+        alphabet, _ = self.getAlphabet(
                 variable = variable,
                 returnCount=True
                 )
@@ -225,8 +257,43 @@ class Data:
 
         return mostRepresentativeSymbol(values = values)
 
+    def pearsonCoeficient(self, value1, value2):
+        return np.corrcoef(value1,value2)[0,1]
 
+    def mutualInformation(
+            self,
+            *,
+            variableX: str,
+            variableY: str,
+            ) -> float:
+        X = self.getValues(variable = variableX)
+        Y = self.getValues(variable = variableY)
 
-root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-file_path = os.path.join(root, 'assets', 'CarDataset.xlsx')
-DATA = Data(file_path)
+        # compute the unique values of X and Y and their counts
+        alphabetX, countX = self.getAlphabet(variable = variableX, returnCount = True)
+        alphabetY, countY = self.getAlphabet(variable = variableY, returnCount = True)
+
+        # compute the counts for each (X,Y) pair based on their unique indices
+        indexX = np.searchsorted(alphabetX, X)
+        indexY = np.searchsorted(alphabetY, Y)
+        jointCounts = np.zeros((alphabetX.size, alphabetY.size))
+        for xIndex, yIndex in zip(indexX, indexY):
+            jointCounts[xIndex, yIndex] += 1
+
+        # compute the probabilities of X, Y and their joint probability
+        probabilitiesX = countX / X.size
+        probabilitiesY = countY / Y.size
+        jointProbabilityXY = jointCounts / X.size
+
+        # compute the mutual information
+        # TODO: Use single for loop
+        mutualInformation = 0
+        for i in range(alphabetX.size):
+            for j in range(alphabetY.size):
+                px = probabilitiesX[i]
+                py = probabilitiesY[j]
+                pxy = jointProbabilityXY[i, j]
+                if pxy > 0:
+                    mutualInformation += pxy * np.log2(pxy / (px * py))
+
+        return mutualInformation
