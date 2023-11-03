@@ -262,15 +262,34 @@ class Data:
             variableX: str,
             variableY: str,
             ) -> float:
-        probabilitiesX = self.getProbabilities(variable = variableX)
-        probabilitiesY = self.getProbabilities(variable = variableY)
-        jointProbability = self.getJointProbability(
-                variable1 = variableX,
-                variable2 = variableY
-                )
+        X = self.getValues(variable = variableX)
+        Y = self.getValues(variable = variableY)
 
-        mutualInformation = jointProbability / (probabilitiesX * probabilitiesY)
-        mutualInformation = np.log2(mutualInformation)
-        mutualInformation *= jointProbability
+        # compute the unique values of X and Y and their counts
+        alphabetX, countX = self.getAlphabet(variable = variableX, returnCount = True)
+        alphabetY, countY = self.getAlphabet(variable = variableY, returnCount = True)
 
-        return mutualInformation.sum()
+        # compute the counts for each (X,Y) pair based on their unique indices
+        indexX = np.searchsorted(alphabetX, X)
+        indexY = np.searchsorted(alphabetY, Y)
+        jointCounts = np.zeros((alphabetX.size, alphabetY.size))
+        for xIndex, yIndex in zip(indexX, indexY):
+            jointCounts[xIndex, yIndex] += 1
+
+        # compute the probabilities of X, Y and their joint probability
+        probabilitiesX = countX / X.size
+        probabilitiesY = countY / Y.size
+        jointProbabilityXY = jointCounts / X.size
+
+        # compute the mutual information
+        # TODO: Use single for loop
+        mutualInformation = 0
+        for i in range(alphabetX.size):
+            for j in range(alphabetY.size):
+                px = probabilitiesX[i]
+                py = probabilitiesY[j]
+                pxy = jointProbabilityXY[i, j]
+                if pxy > 0:
+                    mutualInformation += pxy * np.log2(pxy / (px * py))
+
+        return mutualInformation
