@@ -106,6 +106,41 @@ porque torna o Huffman Coding mais eficiente e traz os seguintes beníficios:
 2. Melhor transmissão de dados
 3. Processamento de dados mais rápido
 
+## Exercicio 10
+
+> b. Comparar os resultados com aqueles obtidos no ponto anterior.
+
+```shell
+$ make run
+./venv/bin/python3 main.py
+
+-------Ex9-------
+Coeficiencia de MPG e Acceleration: 0.4135853380757753
+Coeficiencia de MPG e Cylinders: -0.7760589899625299
+Coeficiencia de MPG e Displacement: -0.8047025675071006
+Coeficiencia de MPG e Horsepower: -0.7551351418256323
+Coeficiencia de MPG e ModelYear: 0.5872638852454333
+Coeficiencia de MPG e Weight: -0.8321486403128849
+
+
+-------Ex10-------
+Mutual Information (Weight, MPG) = 4.610309603870367
+Mutual Information (Displacement, MPG) = 2.6468952576813733
+Mutual Information (Horsepower, MPG) = 2.568450258492729
+```
+
+A correlação varia entre -1 e 1.
+
+Quanto maior a correlação em valor absoluto, maior a relação entre as 2 variavéis
+
+Se a correlação é negativa, significa que as variavéis variam de forma oposta uma à outra.
+
+Como podemos observar, as variáveis com maior coeficiente de correlação com MPG,
+apresentam maior dependência com MPG.
+
+Logo, seria de esperar que estas váriaveis, tenham mais informação em comum
+(informação mútua).
+
 ## Exercicio 11
 
 a)Aplicar esta relacao ao conjunto de dados fornecidos.
