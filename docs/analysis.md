@@ -99,3 +99,39 @@ porque torna o Huffman Coding mais eficiente e traz os seguintes beníficios:
 1. Uso eficiente do armazenamento
 2. Melhor transmissão de dados
 3. Processamento de dados mais rápido
+
+##Exercicio 11
+
+a)Aplicar esta relacao ao conjunto de dados fornecidos.
+
+```shell
+> ./src/ex11.py
+Com todas as variaveis
+[18 15 18 16 17 15 14 14 14 15]
+[15.4113 14.2505 15.8971 15.7324 15.8238 10.7762 10.8115 11.0454 10.2267
+ 13.7537]
+
+Sem a variavel Acceleration
+[18 15 18 16 17 15 14 14 14 15]
+[17.1633 16.0025 17.5031 17.4844 17.4298 12.2362 12.1255 12.3594 11.6867
+ 15.0677]
+
+Sem a variavel Weight
+[18 15 18 16 17 15 14 14 14 15]
+[36.0849 36.0392 36.1695 35.9871 36.1729 36.3881 36.5001 36.4862 36.3342
+ 36.4687]
+
+Acceleration
+Acceleration
+
+```
+b)Comparar o resultado com os valores verdadeiros de MPG:
+
+
+fica evidente que aplicar a formula em funcao das variaveis todos os indices diminuiram em relacao aos valores verdadeiros de `MPG`. A incerteza presente nas outras variaveis cria esse efeito.
+
+e)Comparar os resultados obtidos em a, b e c:
+
+mais uma vez as mudancas sao obvias, e apesar de haver alguma diferenca ao retirar a variavel de menor `MI` e somente quando se retira a variavel de maior `MI` que as mudancao sao drasticas, praticamente dobrando os valores do resultado.
+
+
