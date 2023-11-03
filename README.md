@@ -9,6 +9,7 @@
 - openpyxl==3.1.2
 - pandas==2.1.1
 - PyQt5==5.15.10
+- pytest==7.4.3
 
 ### Prerequisites
 
@@ -96,6 +97,20 @@ For our codebase, we take advantage of [`.editorconfig`](https://editorconfig.or
 file to help maintain consistent coding-style guidelines.
 
 > Now you are ready to go.
+
+## Running
+
+You can run the project by running:
+
+```shell
+make run
+```
+
+## Testing
+
+```shell
+make test
+```
 
 ## License
 

@@ -20,7 +20,7 @@ Please fill in the following checklist, removing items that do not apply.
 -->
 
 ### Summary
-  
+
 <!-- A brief overview of your proposed changes -->
 
 ### Checklist
@@ -29,4 +29,5 @@ Please fill in the following checklist, removing items that do not apply.
 - [ ] My code matches all coding standards
 - [ ] My code follows the [editorconfig guidelines](https://github.com/ShellTux/Huffman-Coding/tree/develop#editorconfig)
 - [ ] I included documentation updates to the coding standards, when needed.
+- [ ] I Included unit testing, where it applies.
 - [ ] I have run the scripts, to make sure it doesn't crash
