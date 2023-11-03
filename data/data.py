@@ -231,3 +231,6 @@ class Data:
         values = self.getValues(variable = variable)
 
         return mostRepresentativeSymbol(values = values)
+
+    def pearsonCoeficient(self, value1, value2):
+        return np.corrcoef(value1,value2)[0,1]
