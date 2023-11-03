@@ -8,7 +8,7 @@ from src.ex6  import main as ex6
 from src.ex7  import main as ex7
 from src.ex8  import main as ex8
 from src.ex9  import main as ex9
-# from src.ex10 import main as ex10
+from src.ex10 import main as ex10
 from src.ex11 import main as ex11
 
 GREEN = '\033[32m'
@@ -24,6 +24,7 @@ if __name__ == "__main__":
             ('Ex7', ex7),
             ('Ex8', ex8),
             ('Ex9', ex9),
+            ('Ex10', ex10),
             ('Ex11', ex11),
             )
 
