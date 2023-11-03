@@ -5,6 +5,9 @@ PYTEST := ./$(VENV)/bin/pytest
 
 all: venv
 
+relatorio.pdf: docs/analysis.md
+	pandoc --from=markdown --output=$@ $<
+
 $(VENV)/bin/activate: requirements.txt
 	python3 -m venv $(VENV)
 	$(PIP) install --requirement requirements.txt
