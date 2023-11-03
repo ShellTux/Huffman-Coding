@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from data import DATA
 from data.graph import histogram
 import matplotlib.pyplot as plt
