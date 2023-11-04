@@ -377,8 +377,38 @@ class Data:
 
         return mostRepresentativeSymbol(values = values)
 
-    def pearsonCoeficient(self, value1, value2):
-        return np.corrcoef(value1,value2)[0,1]
+    def pearsonCoeficient(
+            self,
+            *,
+            variableX: str,
+            variableY: str,
+            ) -> float | None:
+        """
+        Returns the Pearson correlation coefficient between
+        variableX and variableY in the excel sheet
+
+        Parameters
+        ----------
+        variableX : str
+            The first variable
+        variableY : str
+            The second variable
+
+        Returns
+        -------
+        float or None
+            The Pearson correlation coefficient between
+            variableX and variableY in the excel sheet,
+            or None if either of the variables is not present
+            in the excel sheet
+        """
+        if variableX is None or variableY is None:
+            return
+
+        valuesX = self.getValues(variable = variableX)
+        valuesY = self.getValues(variable = variableY)
+
+        return np.corrcoef(valuesX, valuesY)[0,1]
 
     def mutualInformation(
             self,
