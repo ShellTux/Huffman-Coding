@@ -30,8 +30,15 @@ class Data:
     getVariables
     getValues
     getAlphabet
+    getProbabilities
+    getJointProbability
     bitsPerSymbol
+    averageBitsPerSymbol
+    lengthVariance
+    binning
+    mostRepresentativeSymbol
     pearsonCoeficient
+    mutualInformation
     """
 
     def __init__(self, excelFilepath: str) -> None:
@@ -68,12 +75,14 @@ class Data:
 
     def getValues(self, *, variable: str | None = None) -> NDArray:
         """
-        Returns the matrix of values present in the excel sheet, or if a variable is specified, returns its values.
+        Returns the matrix of values present in the excel sheet,
+        or if a variable is specified, returns its values.
 
         Parameters
         ----------
         variable : str, optional
-            The variable whose values are required. If not specified, all values present in the excel sheet are returned. (default None)
+            The variable whose values are required. If not specified, all values
+            present in the excel sheet are returned. (default None)
 
         Raises
         ------
@@ -83,7 +92,8 @@ class Data:
         Returns
         -------
         numpy.ndarray
-            Matrix of values present in the excel sheet, or if a variable is specified, its values
+            Matrix of values present in the excel sheet, or if a variable is
+            specified, its values
         """
 
         if variable is None:
@@ -102,21 +112,26 @@ class Data:
             returnCount: bool = False
             ) -> NDArray | tuple[NDArray, NDArray[np.intp]]:
         """
-        Returns the unique values present in the excel sheet as an array or, if a variable is specified, its unique values
-        along with their counts as a tuple.
+        Returns the unique values present in the excel sheet as an array or, if
+        a variable is specified, its unique values along with their counts as a
+        tuple.
 
         Parameters
         ----------
         variable : str, optional
-            The variable whose unique values are required. If not specified, all unique values present in the excel sheet are returned. (default None)
+            The variable whose unique values are required. If not specified, all
+            unique values present in the excel sheet are returned.
+            (default None)
         returnCount : bool, optional
-            Whether to return the counts of the unique values along with the array of unique values. (default False)
+            Whether to return the counts of the unique values along with the
+            array of unique values. (default False)
 
         Returns
         -------
         numpy.ndarray | tuple[numpy.ndarray, numpy.ndarray]
-            An array of unique values present in the excel sheet or, if a variable is specified, its unique values
-            along with their counts as a tuple
+            An array of unique values present in the excel sheet or, if a
+            variable is specified, its unique values along with their counts as
+            a tuple
         """
 
         if variable is None:
@@ -137,6 +152,24 @@ class Data:
             *,
             variable: str | None = None,
             ) -> NDArray[np.floating]:
+        """
+        Returns the probability of each value present in the excel sheet,
+        or if a variable is specified, returns its probability distribution
+
+        Parameters
+        ----------
+        variable : str, optional
+            The variable whose values are to be used
+            for calculating the probability distribution.
+            If not specified, all values present in the excel sheet are used.
+            (default None)
+
+        Returns
+        -------
+        numpy.ndarray
+            An array of the probabilities of each value in the excel sheet,
+            or if a variable is specified, its probability distribution
+        """
         values = self.getValues(variable = variable)
 
         if values.ndim > 1:
@@ -152,28 +185,48 @@ class Data:
             variable1: str,
             variable2: str,
             ) -> NDArray[np.floating]:
+        """
+        Returns the joint probability distribution of variable1 and variable2 as
+        a numpy array
+
+        Parameters
+        ----------
+        variable1 : str
+            The first variable
+        variable2 : str
+            The second variable
+
+        Returns
+        -------
+        numpy.ndarray
+            The joint probability distribution of variable1 and variable2 as a
+            numpy array
+        """
+
         probabilities1 = self.getProbabilities(variable = variable1)
         probabilities2 = self.getProbabilities(variable = variable2)
 
         # NOTE: Assuming independence
         return probabilities1 * probabilities2
 
-    def bitsPerSymbol(self, *, variable: str | None = None):
+    def bitsPerSymbol(self, *, variable: str | None = None) -> np.floating:
         """
-        Returns the number of bits per symbol required to represent the values present in the excel sheet or, if a variable
-        is specified, its values.
+        Returns the number of bits per symbol required to represent the values
+        present in the excel sheet or, if a variable is specified, its values.
 
         Parameters
         ----------
         variable : str, optional
-            The variable whose values are to be used for calculating the number of bits per symbol. If not specified,
-            all values present in the excel sheet are used. (default None)
+            The variable whose values are to be used for calculating the number
+            of bits per symbol. If not specified, all values present in the
+            excel sheet are used. (default None)
 
         Returns
         -------
         float
-            The number of bits per symbol required to represent the values present in the excel sheet or, if a variable
-            is specified, its values.
+            The number of bits per symbol required to represent the values
+            present in the excel sheet or, if a variable is specified, its
+            values.
         """
 
         probabilities = self.getProbabilities(variable = variable)
@@ -182,9 +235,31 @@ class Data:
         # NOTE: Entropy H = -sum(p * log2(p))
         return -np.sum(probabilities * np.log2(probabilities))
 
-    def averageBitsPerSymbol(self, *,
-            variable: str | None = None,
+    def averageBitsPerSymbol(
+            self,
+            *,
+            variable: str | None = None
             ) -> np.floating:
+        """
+        Returns the average number of bits per symbol required to encode the
+        values in the excel sheet using Huffman encoding, or if a variable is
+        specified, its values
+
+        Parameters
+        ----------
+        variable : str, optional
+            The variable whose values are to be used for calculating the number
+            of bits per symbol. If not specified, all values present in the
+            excel sheet are used. (default None)
+
+        Returns
+        -------
+        numpy.floating
+            The average number of bits per symbol required to encode the values
+            in the excel sheet using Huffman encoding, or if a variable is
+            specified, its values
+
+        """
         S = self.getValues(variable = variable)
 
         if S.ndim > 1:
@@ -200,6 +275,25 @@ class Data:
 
     # TODO: Remove duplicated code between lengthVariance and averageBitsPerSymbol
     def lengthVariance(self, *, variable: str | None = None) -> np.floating:
+        """
+        Returns the variance of the lengths of the Huffman codes required to
+        encode the values in the excel sheet, or if a variable is specified, its
+        values
+
+        Parameters
+        ----------
+        variable : str, optional (default None)
+            The variable whose values are to be used for calculating the
+            variance of the lengths of the Huffman codes. If not specified, all
+            values present in the excel sheet are used.
+
+        Returns
+        -------
+        np.floating
+            The variance of the lengths of the Huffman codes required to encode
+            the values in the excel sheet, or if a variable is specified, its
+            values
+        """
         S = self.getValues(variable = variable)
 
         if S.ndim > 1:
@@ -211,15 +305,29 @@ class Data:
         return np.var(lengths)
 
 
-    def binning(self, *,
-                binSize: int,
-                variable: str | None = None,
-                ) -> NDArray:
+    def binning(self, *, binSize: int, variable: str | None = None) -> NDArray:
+        """
+        Returns the values in the excel sheet, or if a variable is specified,
+        its values, divided into bins of size binSize The value in each bin is
+        replaced by its most representative symbol
+
+        Parameters
+        ----------
+        binSize : int
+            The size of each bin
+        variable : str, optional
+            The variable whose values are to be binned. If not specified, all
+            values in the excel sheet are binned. (default None)
+
+        Returns
+        -------
+        numpy.ndarray
+            The values in the excel sheet, or if a variable is specified, its
+            values, divided into bins of size binSize, with each value in a bin
+            replaced by its most representative symbol
+        """
         values = self.getValues(variable = variable)
-        alphabet, _ = self.getAlphabet(
-                variable = variable,
-                returnCount=True
-                )
+        alphabet, _ = self.getAlphabet(variable = variable, returnCount=True)
 
         # Binning Algorithm
         min, max = alphabet[0], alphabet[0] + binSize - 1
@@ -248,6 +356,23 @@ class Data:
             self, *,
             variable: str | None = None
             ) -> int | float:
+        """
+        Returns the most representative symbol in the excel sheet, or if a
+        variable is specified, its values
+
+        Parameters
+        ----------
+        variable : str, optional (default None)
+            The variable whose most representative symbol is to be returned. If
+            not specified, the most representative symbol of all values in the
+            excel sheet is returned.
+
+        Returns
+        -------
+        int or float
+            The most representative symbol in the excel sheet, or if a variable
+            is specified, its values
+        """
         values = self.getValues(variable = variable)
 
         return mostRepresentativeSymbol(values = values)
@@ -291,6 +416,23 @@ class Data:
             variableX: str,
             variableY: str,
             ) -> float:
+        """
+        Returns the mutual information between variableX and variableY in the
+        excel sheet
+
+        Parameters
+        ----------
+        variableX : str
+            The first variable
+        variableY : str
+            The second variable
+
+        Returns
+        -------
+        float
+            The mutual information between variableX and variableY in the excel
+            sheet
+        """
         X = self.getValues(variable = variableX)
         Y = self.getValues(variable = variableY)
 
