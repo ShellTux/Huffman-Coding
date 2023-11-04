@@ -27,16 +27,11 @@ class Data:
 
     Methods
     -------
-    getVariables() -> list[str]:
-        Returns the list of column names present in the excel sheet
-    getValues(variable: str | None = None) -> numpy.ndarray:
-        Returns the matrix of values present in the excel sheet, or if a variable is specified, returns its values
-    getAlphabet(variable: str | None = None, returnCount: bool = False) -> numpy.ndarray | tuple[numpy.ndarray, numpy.ndarray]:
-        Returns the unique values present in the excel sheet as an array or, if a variable is specified, its unique values
-        along with their counts as a tuple
-    bitsPerSymbol(variable: str | None = None)
-        Returns the number of bits per symbol required to represent the values present in the excel sheet or, if a variable
-        is specified, its values
+    getVariables
+    getValues
+    getAlphabet
+    bitsPerSymbol
+    pearsonCoeficient
     """
 
     def __init__(self, excelFilepath: str) -> None:
@@ -257,8 +252,38 @@ class Data:
 
         return mostRepresentativeSymbol(values = values)
 
-    def pearsonCoeficient(self, value1, value2):
-        return np.corrcoef(value1,value2)[0,1]
+    def pearsonCoeficient(
+            self,
+            *,
+            variableX: str,
+            variableY: str,
+            ) -> float | None:
+        """
+        Returns the Pearson correlation coefficient between
+        variableX and variableY in the excel sheet
+
+        Parameters
+        ----------
+        variableX : str
+            The first variable
+        variableY : str
+            The second variable
+
+        Returns
+        -------
+        float or None
+            The Pearson correlation coefficient between
+            variableX and variableY in the excel sheet,
+            or None if either of the variables is not present
+            in the excel sheet
+        """
+        if variableX is None or variableY is None:
+            return
+
+        valuesX = self.getValues(variable = variableX)
+        valuesY = self.getValues(variable = variableY)
+
+        return np.corrcoef(valuesX, valuesY)[0,1]
 
     def mutualInformation(
             self,
