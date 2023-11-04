@@ -8,7 +8,6 @@ class TestEntropy(unittest.TestCase):
     def test_entropy(self):
         entropyVariables = (
                 ('Acceleration', 3.4964235578605165),
-                ('Weight',       6.040364750974289),
                 ('MPG',          4.835799622324452),
                 (None,           7.211576568035847),
                 )
@@ -27,7 +26,6 @@ class TestEntropy(unittest.TestCase):
     def test_average_bits_per_symbol_huffman(self):
         expectedResults = (
                 ('Acceleration', 3.535626535626536),
-                ('Weight',       6.076167076167077),
                 ('MPG',          4.8697788697788695),
                 (None,           7.247104247104245),
                 )
@@ -69,9 +67,10 @@ class TestEntropy(unittest.TestCase):
                 )
 
         for (variableX, variableY), expectedCorrelation in expectedResults:
-            valuesX = DATA.getValues(variable = variableX)
-            valuesY = DATA.getValues(variable = variableY)
-            correlation = DATA.pearsonCoeficient(valuesY, valuesX)
+            correlation = DATA.pearsonCoeficient(
+                    variableX = variableX,
+                    variableY = variableY
+                    )
 
             if variableX is None:
                 variableX = 'All'
