@@ -1,4 +1,4 @@
-from numpy._typing import NDArray
+from numpy._typing import NDArray, DTypeLike
 from typing import Dict
 import huffmancodec.huffmancodec as huffc
 import numpy as np
@@ -41,7 +41,7 @@ class Data:
     mutualInformation
     """
 
-    def __init__(self, excelFilepath: str) -> None:
+    def __init__(self, excelFilepath: str, dataType: DTypeLike) -> None:
         """
         Constructs all the necessary attributes for the Data object.
 
@@ -49,17 +49,21 @@ class Data:
         ----------
             excelFilepath : str
                 File path of the excel file containing the data
+
+            dataType: DTypeLike
+                Data type of elements of excel matrix
         """
 
         # Read the excel file and store the values
         data = pd.read_excel(excelFilepath)
         self.__VARIABLES: list[str] = data.columns.values.tolist()
-        self.__VALUES: NDArray = data.values.copy()
+        self.__VALUES: NDArray = data.values.copy().astype(dataType)
 
         # Create mapping between variables and their values
-        self.__mapVariableValues: Dict[str, NDArray] = dict()
+        self.__mapVariableValues: Dict[str, NDArray[np.uint16]] = dict()
         for index, variable in enumerate(self.__VARIABLES):
-            self.__mapVariableValues[variable] = self.__VALUES[:, index].copy()
+            values = self.__VALUES[:, index].copy().astype(dataType)
+            self.__mapVariableValues[variable] = values
 
     def getVariables(self) -> list[str]:
         """
