@@ -26,8 +26,8 @@ Please fill in the following checklist, removing items that do not apply.
 ### Checklist
 
 - [ ] I am creating a pull request to the `develop` branch
-- [ ] My code matches all coding standards
+<!-- - [ ] My code matches all coding standards -->
 - [ ] My code follows the [editorconfig guidelines](https://github.com/ShellTux/Huffman-Coding/tree/develop#editorconfig)
-- [ ] I included documentation updates to the coding standards, when needed.
+- [ ] I included/updated documentation to changed methods
 - [ ] I Included unit testing, where it applies.
 - [ ] I have run the scripts, to make sure it doesn't crash
