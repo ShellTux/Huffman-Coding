@@ -8,6 +8,9 @@ all: venv
 relatorio.pdf: docs/analysis.md
 	pandoc --from=markdown --output=$@ $<
 
+trabalho.zip: relatorio.pdf
+	git archive --format=zip --output=trabalho.zip HEAD --add-file=relatorio.pdf
+
 $(VENV)/bin/activate: requirements.txt
 	python3 -m venv $(VENV)
 	$(PIP) install --requirement requirements.txt
