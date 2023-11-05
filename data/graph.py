@@ -30,26 +30,27 @@ class Marker(Enum):
         DIAMOND (str): A diamond marker.
         THIN_DIAMOND (str): A thin diamond marker.
     """
-    POINT = '.'
-    PIXEL = ','
-    CIRCLE = 'o'
-    TRIANGLE_DOWN = 'v'
-    TRIANGLE_UP = '^'
-    TRIANGLE_LEFT = '<'
-    TRIANGLE_RIGHT = '>'
-    ARROW_DOWN = '1'
-    ARROW_UP = '2'
-    ARROW_LEFT = '3'
-    ARROW_RIGHT = '4'
-    SQUARE = 's'
-    PENTAGON = 'p'
-    STAR = '*'
-    HEXAGON1 = 'h'
-    HEXAGON2 = 'H'
-    PLUS = '+'
-    CROSS = 'x'
-    DIAMOND = 'D'
-    THIN_DIAMOND = 'd'
+
+    POINT = "."
+    PIXEL = ","
+    CIRCLE = "o"
+    TRIANGLE_DOWN = "v"
+    TRIANGLE_UP = "^"
+    TRIANGLE_LEFT = "<"
+    TRIANGLE_RIGHT = ">"
+    ARROW_DOWN = "1"
+    ARROW_UP = "2"
+    ARROW_LEFT = "3"
+    ARROW_RIGHT = "4"
+    SQUARE = "s"
+    PENTAGON = "p"
+    STAR = "*"
+    HEXAGON1 = "h"
+    HEXAGON2 = "H"
+    PLUS = "+"
+    CROSS = "x"
+    DIAMOND = "D"
+    THIN_DIAMOND = "d"
 
 
 class Color(Enum):
@@ -63,25 +64,27 @@ class Color(Enum):
         RED (str): A red color.
         YELLOW (str): A yellow color.
     """
-    BLUE = 'blue'
-    GREEN = 'green'
-    PURPLE = 'purple'
-    RED = 'red'
-    YELLOW = 'yellow'
+
+    BLUE = "blue"
+    GREEN = "green"
+    PURPLE = "purple"
+    RED = "red"
+    YELLOW = "yellow"
 
 
 def scatter(
-        *,
-        xValues: NDArray, yValues: NDArray,
-        figure: Figure,
-        title: str | None = None,
-        xLabel: str | None = None,
-        yLabel: str | None = None,
-        color: Color = Color.PURPLE,
-        marker: Marker = Marker.CIRCLE,
-        grid: bool = True,
-        subplot: int = 111,
-        ) -> None:
+    *,
+    xValues: NDArray,
+    yValues: NDArray,
+    figure: Figure,
+    title: str | None = None,
+    xLabel: str | None = None,
+    yLabel: str | None = None,
+    color: Color = Color.PURPLE,
+    marker: Marker = Marker.CIRCLE,
+    grid: bool = True,
+    subplot: int = 111,
+) -> None:
     """
     A function to draw a scatter plot.
 
@@ -102,12 +105,12 @@ def scatter(
     """
     if title is None:
         if xLabel is not None and yLabel is not None:
-            title = f'{yLabel} vs {xLabel}'
+            title = f"{yLabel} vs {xLabel}"
 
     plt.figure(figure)
 
     plt.subplot(subplot)
-    plt.scatter(xValues, yValues, color = color.value, marker = marker.value)
+    plt.scatter(xValues, yValues, color=color.value, marker=marker.value)
 
     if title is not None:
         plt.title(title)
@@ -122,17 +125,17 @@ def scatter(
 
 
 def histogram(
-        *,
-        xValues: NDArray,
-        yValues: NDArray,
-        title: str = 'Histogram',
-        xLabel: str | None = None,
-        yLabel: str | None = None,
-        color: Color = Color.RED,
-        grid: bool = True,
-        figure: Figure,
-        subplot: int = 111,
-        ) -> None:
+    *,
+    xValues: NDArray,
+    yValues: NDArray,
+    title: str = "Histogram",
+    xLabel: str | None = None,
+    yLabel: str | None = None,
+    color: Color = Color.RED,
+    grid: bool = True,
+    figure: Figure,
+    subplot: int = 111,
+) -> None:
     """
     A function to draw a histogram.
 
@@ -154,7 +157,7 @@ def histogram(
     plt.subplot(subplot)
 
     # TODO: x values are float
-    plt.bar(xValues, yValues, color = color.value)
+    plt.bar(xValues, yValues, color=color.value)
     # TODO: add occurrences for intermidiate values (plt.xticks)
 
     plt.title(title)

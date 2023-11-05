@@ -4,11 +4,13 @@ import huffmancodec.huffmancodec as huffc
 import numpy as np
 import pandas as pd
 
+
 def mostRepresentativeSymbol(*, values: NDArray):
-    alphabet, alphabetCount = np.unique(values.flatten(), return_counts = True)
+    alphabet, alphabetCount = np.unique(values.flatten(), return_counts=True)
 
     maxIndex = np.argmax(alphabetCount)
     return alphabet[maxIndex]
+
 
 class Data:
     """
@@ -106,15 +108,13 @@ class Data:
         values = self.__mapVariableValues.get(variable)
 
         if values is None:
-            raise KeyError(f'There is no \'{variable}\' in {self.__VARIABLES}')
+            raise KeyError(f"There is no '{variable}' in {self.__VARIABLES}")
 
         return values.copy()
 
     def getAlphabet(
-            self, *,
-            variable: str | None = None,
-            returnCount: bool = False
-            ) -> NDArray | tuple[NDArray, NDArray[np.intp]]:
+        self, *, variable: str | None = None, returnCount: bool = False
+    ) -> NDArray | tuple[NDArray, NDArray[np.intp]]:
         """
         Returns the unique values present in the excel sheet as an array or, if
         a variable is specified, its unique values along with their counts as a
@@ -140,22 +140,22 @@ class Data:
 
         if variable is None:
             if returnCount:
-                return np.unique(self.__VALUES, return_counts = True)
+                return np.unique(self.__VALUES, return_counts=True)
             else:
                 return np.unique(self.__VALUES)
 
-        values = self.getValues(variable = variable)
+        values = self.getValues(variable=variable)
 
         if returnCount:
-            return np.unique(values, return_counts = True)
+            return np.unique(values, return_counts=True)
         else:
             return np.unique(values)
 
     def getProbabilities(
-            self,
-            *,
-            variable: str | None = None,
-            ) -> NDArray[np.floating]:
+        self,
+        *,
+        variable: str | None = None,
+    ) -> NDArray[np.floating]:
         """
         Returns the probability of each value present in the excel sheet,
         or if a variable is specified, returns its probability distribution
@@ -174,7 +174,7 @@ class Data:
             An array of the probabilities of each value in the excel sheet,
             or if a variable is specified, its probability distribution
         """
-        values = self.getValues(variable = variable)
+        values = self.getValues(variable=variable)
 
         if values.ndim > 1:
             values = values.flatten()
@@ -184,11 +184,11 @@ class Data:
         return probabilities
 
     def getJointProbability(
-            self,
-            *,
-            variable1: str,
-            variable2: str,
-            ) -> NDArray[np.floating]:
+        self,
+        *,
+        variable1: str,
+        variable2: str,
+    ) -> NDArray[np.floating]:
         """
         Returns the joint probability distribution of variable1 and variable2 as
         a numpy array
@@ -207,8 +207,8 @@ class Data:
             numpy array
         """
 
-        probabilities1 = self.getProbabilities(variable = variable1)
-        probabilities2 = self.getProbabilities(variable = variable2)
+        probabilities1 = self.getProbabilities(variable=variable1)
+        probabilities2 = self.getProbabilities(variable=variable2)
 
         # NOTE: Assuming independence
         return probabilities1 * probabilities2
@@ -233,17 +233,15 @@ class Data:
             values.
         """
 
-        probabilities = self.getProbabilities(variable = variable)
+        probabilities = self.getProbabilities(variable=variable)
         probabilities = probabilities[probabilities > 0]
 
         # NOTE: Entropy H = -sum(p * log2(p))
         return -np.sum(probabilities * np.log2(probabilities))
 
     def averageBitsPerSymbol(
-            self,
-            *,
-            variable: str | None = None
-            ) -> np.floating:
+        self, *, variable: str | None = None
+    ) -> np.floating:
         """
         Returns the average number of bits per symbol required to encode the
         values in the excel sheet using Huffman encoding, or if a variable is
@@ -264,7 +262,7 @@ class Data:
             specified, its values
 
         """
-        S = self.getValues(variable = variable)
+        S = self.getValues(variable=variable)
 
         if S.ndim > 1:
             S = S.flatten()
@@ -272,10 +270,10 @@ class Data:
         codec = huffc.HuffmanCodec.from_data(S)
         _, lengths = codec.get_code_len()
 
-        probabilities = self.getProbabilities(variable = variable)
+        probabilities = self.getProbabilities(variable=variable)
         probabilities = probabilities[probabilities > 0]
 
-        return np.average(lengths, weights = probabilities)
+        return np.average(lengths, weights=probabilities)
 
     # TODO: Remove duplicated code between lengthVariance and averageBitsPerSymbol
     def lengthVariance(self, *, variable: str | None = None) -> np.floating:
@@ -298,7 +296,7 @@ class Data:
             the values in the excel sheet, or if a variable is specified, its
             values
         """
-        S = self.getValues(variable = variable)
+        S = self.getValues(variable=variable)
 
         if S.ndim > 1:
             S = S.flatten()
@@ -307,7 +305,6 @@ class Data:
         _, lengths = codec.get_code_len()
 
         return np.var(lengths)
-
 
     def binning(self, *, binSize: int, variable: str | None = None) -> NDArray:
         """
@@ -330,8 +327,8 @@ class Data:
             values, divided into bins of size binSize, with each value in a bin
             replaced by its most representative symbol
         """
-        values = self.getValues(variable = variable)
-        alphabet, _ = self.getAlphabet(variable = variable, returnCount=True)
+        values = self.getValues(variable=variable)
+        alphabet, _ = self.getAlphabet(variable=variable, returnCount=True)
 
         # Binning Algorithm
         min, max = alphabet[0], alphabet[0] + binSize - 1
@@ -339,7 +336,9 @@ class Data:
         while min < maxAlphabet:
             valuesFilter: NDArray[np.bool_] = (min <= values) & (values <= max)
 
-            alphabetFilter: NDArray[np.bool_] = (min <= alphabet) & (alphabet <= max)
+            alphabetFilter: NDArray[np.bool_] = (min <= alphabet) & (
+                alphabet <= max
+            )
             alphabetSection = alphabet[alphabetFilter]
 
             if alphabetSection.size <= 0:
@@ -347,7 +346,7 @@ class Data:
                 max += binSize
                 continue
 
-            symbol = mostRepresentativeSymbol(values = alphabetSection)
+            symbol = mostRepresentativeSymbol(values=alphabetSection)
 
             values = np.where(valuesFilter, symbol, values)
 
@@ -357,9 +356,8 @@ class Data:
         return values
 
     def mostRepresentativeSymbol(
-            self, *,
-            variable: str | None = None
-            ) -> int | float:
+        self, *, variable: str | None = None
+    ) -> int | float:
         """
         Returns the most representative symbol in the excel sheet, or if a
         variable is specified, its values
@@ -377,16 +375,16 @@ class Data:
             The most representative symbol in the excel sheet, or if a variable
             is specified, its values
         """
-        values = self.getValues(variable = variable)
+        values = self.getValues(variable=variable)
 
-        return mostRepresentativeSymbol(values = values)
+        return mostRepresentativeSymbol(values=values)
 
     def pearsonCoeficient(
-            self,
-            *,
-            variableX: str,
-            variableY: str,
-            ) -> float | None:
+        self,
+        *,
+        variableX: str,
+        variableY: str,
+    ) -> float | None:
         """
         Returns the Pearson correlation coefficient between
         variableX and variableY in the excel sheet
@@ -409,17 +407,17 @@ class Data:
         if variableX is None or variableY is None:
             return
 
-        valuesX = self.getValues(variable = variableX)
-        valuesY = self.getValues(variable = variableY)
+        valuesX = self.getValues(variable=variableX)
+        valuesY = self.getValues(variable=variableY)
 
-        return np.corrcoef(valuesX, valuesY)[0,1]
+        return np.corrcoef(valuesX, valuesY)[0, 1]
 
     def mutualInformation(
-            self,
-            *,
-            variableX: str,
-            variableY: str,
-            ) -> float:
+        self,
+        *,
+        variableX: str,
+        variableY: str,
+    ) -> float:
         """
         Returns the mutual information between variableX and variableY in the
         excel sheet
@@ -437,12 +435,16 @@ class Data:
             The mutual information between variableX and variableY in the excel
             sheet
         """
-        X = self.getValues(variable = variableX)
-        Y = self.getValues(variable = variableY)
+        X = self.getValues(variable=variableX)
+        Y = self.getValues(variable=variableY)
 
         # compute the unique values of X and Y and their counts
-        alphabetX, countX = self.getAlphabet(variable = variableX, returnCount = True)
-        alphabetY, countY = self.getAlphabet(variable = variableY, returnCount = True)
+        alphabetX, countX = self.getAlphabet(
+            variable=variableX, returnCount=True
+        )
+        alphabetY, countY = self.getAlphabet(
+            variable=variableY, returnCount=True
+        )
 
         # compute the counts for each (X,Y) pair based on their unique indices
         indexX = np.searchsorted(alphabetX, X)
