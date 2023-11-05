@@ -1,0 +1,29 @@
+[tool.black]
+line-length = 80
+target-version = ['py37', 'py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+# 'extend-exclude' excludes files or directories in addition to the defaults
+extend-exclude = '''/(
+    \.eggs/|
+    \.git/|
+    \.hg/|
+    \.mypy_cache/|
+    \.nox/|
+    \.tox/|
+    \.venv/|
+    _build/|
+    build/|
+    dist/|
+    huffmancodec/
+)'''
+skip-string-normalization = false  # Do not normalize string quotes or prefixes
+pyi-line-overrides = false        # Do not apply formatting to pyi files
+
+# Advanced options
+force-quote = 'single'            # Use single quotes for all string literals
+no-self-compare = true            # Do not compare a variable to itself
+skip-numeric-underscore-normalization = true  # Do not normalize numeric literals containing underscores
+show-source = true                # Show the original source code in error messages
+use-tabs = false                   # Use tabs for indentation rather than spaces
+tab-width = 4                     # Number of spaces equivalent to one tab
+multi-line-output = 'grid'        # Use "grid" mode for multi-line statements
