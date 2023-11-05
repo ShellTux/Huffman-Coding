@@ -1,9 +1,12 @@
 from data import DATA
 from numpy._typing import NDArray
+import numpy as np
+
 
 sliceLength = 10
 
 def main():
+    variables = list(filter(lambda variable: variable != 'MPG', DATA.getVariables()))
     mpg          = DATA.getValues(variable='MPG')
     acceleration = DATA.getValues(variable='Acceleration')
     cylinders    = DATA.getValues(variable='Cylinders')
@@ -12,50 +15,33 @@ def main():
     model        = DATA.getValues(variable='ModelYear')
     weight       = DATA.getValues(variable='Weight')
     # Define the formula for MPG estimation
-    estimativa = mpg_estimativa(
-        acceleration = acceleration,
-        cylinders    = cylinders,
-        displacement = displacement,
-        horsepower   = horsepower,
-        model        = model,
-        weight       = weight
-    )
-    print('Com todas as variaveis')
-    print(mpg[:sliceLength])
-    print(estimativa[:sliceLength])
-    print()
+    excludedVariables = (None, 'Acceleration', 'Weight')
+    # weight = weight * 0
+    # acceleration = acceleration * 0
 
-    estimativa = mpg_estimativa(
-        acceleration=acceleration * 0,
-        cylinders=cylinders,
-        displacement=displacement,
-        horsepower=horsepower,
-        model=model,
-        weight=weight
-    )
-    print('Sem a variavel Acceleration')
-    print(mpg[:sliceLength])
-    print(estimativa[:sliceLength])
-    print()
+    for excludedVariable in excludedVariables:
+            accelerationFactor = 0 if 'Acceleration' == excludedVariable else 1
+            cylindersFactor    = 0 if 'Cylinders' == excludedVariable else 1
+            displacementFactor = 0 if 'Displacement' == excludedVariable else 1
+            horsepowerFactor   = 0 if 'Horsepower' == excludedVariable else 1
+            modelFactor        = 0 if 'ModelYear' == excludedVariable else 1
+            weightFactor       = 0 if 'Weight' == excludedVariable else 1
 
-    estimativa = mpg_estimativa(
-        acceleration=acceleration,
-        cylinders=cylinders,
-        displacement=displacement,
-        horsepower=horsepower,
-        model=model,
-        weight=weight * 0
-    )
-    print('Sem a variavel Weight')
-    print(mpg[:sliceLength])
-    print(estimativa[:sliceLength])
-    print()
-
-    variables = list(filter(
-        lambda variable: variable != 'MPG',
-        DATA.getVariables()
-        ))
-
+            prediction = mpg_estimativa(
+                    acceleration = acceleration * accelerationFactor,
+                    cylinders    = cylinders * cylindersFactor,
+                    displacement = displacement * displacementFactor,
+                    horsepower   = horsepower * horsepowerFactor,
+                    model        = model * modelFactor,
+                    weight       = weight * weightFactor,
+                    )
+            MAE = np.mean(np.abs(prediction - mpg))
+            if excludedVariable is None:
+                print(f'Mean average error with all variables')
+            else:
+                print(f'Mean average error without {excludedVariable}')
+            print(f'MAE = {MAE}')
+            print()
     influentialVariableMax = max(
             variables,
             key = lambda variable: DATA.mutualInformation(
